@@ -1,18 +1,15 @@
 from django.shortcuts import render
-from django.db.models import Q
 from django.views import View
+from django.db.models import Q
 
-from product.models import Product
-
+from .models import Product
 
 class ProductView(View):
-    """
-    This class is for rendering Product page.
-    --> return all product.
-    """
-
     def get(self, request):
-        query = request.GET.get('q', '')
+        """
+        get products -> apply filtering.
+        """
+        query = request.GET.get("q", "")
         products = Product.objects.select_related("user").all()
 
         if query:
@@ -22,11 +19,9 @@ class ProductView(View):
                 Q(tag__name__icontains=query)
             ).distinct()
 
-        context = {
-            'products': products,
-            'query': query,
-        }
+        context = {"products": products, "query": query}
 
-        if request.htmx:
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             return render(request, "gallery/product_list.html", context)
+
         return render(request, "gallery/products.html", context)

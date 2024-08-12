@@ -5,11 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ShadGallery</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script type="text/javascript" src="{% static 'htmx/htmx.min.js' %}" defer></script>
-    <script src="https://unpkg.com/htmx.org@1.8.0"></script>
 </head>
 
-<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+<body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Shad Gallery</a>
@@ -19,7 +17,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url "home" %}">Home</a>
+                    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
                 </li>
             </ul>
         </div>
@@ -27,14 +25,12 @@
 </nav>
 
 <div class="container mt-4">
-    <form method="GET" hx-get="{% url 'products' %}" hx-target="#product-list" hx-trigger="keyup changed delay:500ms">
+    <form id="search-form" method="GET">
         <div class="input-group mb-3">
-            <input type="search" class="form-control" placeholder="Search by title, description or tag..." name="q" value="{{ query }}">
-            <button class="btn btn-outline-secondary" type="submit">Search</button>
+            <input type="search" id="search-input" class="form-control" placeholder="Search by title, description or tag..." name="q">
         </div>
     </form>
 </div>
-
 
 <div class="container mt-5">
     <h1 class="text-center mb-5">Shad Gallery</h1>
@@ -45,5 +41,39 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const searchInput = document.getElementById("search-input");
+        const productList = document.getElementById("product-list");
+        let timeout = null;
+
+        searchInput.addEventListener("keyup", function() {
+            clearTimeout(timeout);
+
+            timeout = setTimeout(function() {
+                const query = searchInput.value;
+                fetchProducts(query);
+            }, 1000);
+        });
+
+        function fetchProducts(query) {
+            const url = `{% url 'products' %}?q=` + encodeURIComponent(query);
+
+            fetch(url, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.text())
+            .then(data => {
+                productList.innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Error fetching products:', error);
+            });
+        }
+    });
+</script>
 </body>
 </html>
