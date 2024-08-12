@@ -1,0 +1,21 @@
+{% if products %}
+    {% for product in products %}
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.title }}</h5>
+                    <p class="card-text">{{ product.description|slice:70 }}...</p>
+                    <!-- Tags Section -->
+                    <div>
+                        {% for tag in product.tag.all %}
+                            <span class="badge bg-secondary m-1">{{ tag.name }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <p class="text-center">No results found.</p>
+{% endif %}

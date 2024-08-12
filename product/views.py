@@ -27,5 +27,6 @@ class ProductView(View):
             'query': query,
         }
 
-        context = {"products": products}
+        if request.htmx:
+            return render(request, "gallery/product_list.html", context)
         return render(request, "gallery/products.html", context)
