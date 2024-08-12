@@ -10,6 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # Application definition
 INSTALLED_APPS = [
     # Main App
+    "django.contrib.sites",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -51,6 +52,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "home.context_processors.site_info",
             ],
         },
     },
@@ -103,3 +105,7 @@ MESSAGE_TAGS = {
     messages.WARNING: "warning",
     messages.ERROR: "danger",
 }
+
+
+# site id
+SITE_ID = 1
