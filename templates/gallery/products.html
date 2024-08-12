@@ -26,27 +26,41 @@
     </div>
 </nav>
 
+<!-- Search Section -->
+<div class="container mt-4">
+    <form method="GET" action=".">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Search by title, description or tag..." name="q" value="{{ request.GET.q }}">
+            <button class="btn btn-outline-secondary" type="submit">Search</button>
+        </div>
+    </form>
+</div>
+
 <!-- Gallery Section -->
 <div class="container mt-5">
     <h1 class="text-center mb-5">Shad Gallery</h1>
     <div class="row">
-        {% for product in products %}
-            <div class="col-md-4">
-                <div class="card mb-4">
-                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ product.name }}</h5>
-                        <p class="card-text">{{ product.description }}</p>
-                        <!-- Tags Section -->
-                        <div>
-                            {% for tag in product.tag.all %}
-                                <span class="badge bg-secondary m-1">{{ tag.name }}</span>
-                            {% endfor %}
+        {% if products %}
+            {% for product in products %}
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.title }}</h5>
+                            <p class="card-text">{{ product.description|slice:70 }}...</p>
+                            <!-- Tags Section -->
+                            <div>
+                                {% for tag in product.tag.all %}
+                                    <span class="badge bg-secondary m-1">{{ tag.name }}</span>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        {% else %}
+            <p class="text-center">No results found.</p>
+        {% endif %}
     </div>
 </div>
 

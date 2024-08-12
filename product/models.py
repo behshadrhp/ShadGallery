@@ -14,11 +14,11 @@ class Product(models.Model):
     # initial fields
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to="product/img/")
-    name = models.CharField(max_length=50)
+    title = models.CharField(max_length=50)
     description = models.TextField()
 
     # tag field
     tag = TaggableManager()
 
     def __str__(self) -> str:
-        return self.name
+        return self.title

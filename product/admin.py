@@ -8,4 +8,4 @@ class ProductAdmin(admin.ModelAdmin):
     Monitoring from admin panel.
     """
     
-    list_display = ["user", "name"]
+    list_display = ["user", "title"]
