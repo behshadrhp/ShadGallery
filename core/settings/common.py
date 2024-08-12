@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     # External App
     "debug_toolbar",
     "taggit",
+    "django_htmx",
 ]
 
 MIDDLEWARE = [
@@ -35,6 +36,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # Third-Party Middleware
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "django_htmx.middleware.HtmxMiddleware",
 ]
 
 ROOT_URLCONF = "core.urls"
