@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     "product",
     # External App
     "debug_toolbar",
+    "taggit",
 ]
 
 MIDDLEWARE = [
